@@ -21,19 +21,19 @@ namespace ClipboardMachinery.Components.Tag {
             }
         }
 
-        public string TypeName {
-            get => typeName;
+        public string Name {
+            get => name;
             set {
-                if (typeName == value) {
+                if (name == value) {
                     return;
                 }
 
-                typeName = value;
+                name = value;
                 NotifyOfPropertyChange();
             }
         }
 
-        public string Value {
+        public object Value {
             get => val;
             set {
                 if (val == value) {
@@ -45,14 +45,14 @@ namespace ClipboardMachinery.Components.Tag {
             }
         }
 
-        public Type ValueKind {
-            get => valueKind;
+        public Type Kind {
+            get => kind;
             set {
-                if (valueKind == value) {
+                if (kind == value) {
                     return;
                 }
 
-                valueKind = value;
+                kind = value;
                 NotifyOfPropertyChange();
             }
         }
@@ -82,14 +82,10 @@ namespace ClipboardMachinery.Components.Tag {
         }
 
         public Color? Color {
-            get => color;
+            get => color ?? defaultColor;
             set {
                 if (color == value) {
                     return;
-                }
-
-                if (value == null) {
-                    value = defaultColor;
                 }
 
                 color = value;
@@ -109,14 +105,17 @@ namespace ClipboardMachinery.Components.Tag {
         );
 
         private int id;
-        private string typeName;
-        private string val;
-        private Type valueKind;
-        private Color? color = defaultColor;
+        private string name;
+        private object val;
+        private Type kind;
+        private Color? color;
         private string description;
         private byte priority;
 
         #endregion
+
+        public TagModel() {
+        }
 
     }
 

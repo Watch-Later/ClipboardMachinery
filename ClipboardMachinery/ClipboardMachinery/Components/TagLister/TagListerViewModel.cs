@@ -130,19 +130,19 @@ namespace ClipboardMachinery.Components.TagLister {
                     break;
 
                 case TagEvent.TagEventType.TypeRemoved:
-                    foreach (TagViewModel tagToRemove in Items.Where(vm => vm.Model.TypeName == message.TagTypeName).ToArray()) {
+                    foreach (TagViewModel tagToRemove in Items.Where(vm => vm.Model.Name == message.TagName).ToArray()) {
                         Clip.Tags.Remove(tagToRemove.Model);
                     }
                     break;
 
                 case TagEvent.TagEventType.TypeColorChanged:
-                    foreach (TagViewModel vm in Items.Where(vm => vm.Model.TypeName == message.TagTypeName)) {
+                    foreach (TagViewModel vm in Items.Where(vm => vm.Model.Name == message.TagName)) {
                         vm.Model.Color = (Color)message.Argument;
                     }
                     break;
 
                 case TagEvent.TagEventType.TypePriorityChanged:
-                    foreach (TagViewModel vm in Items.Where(vm => vm.Model.TypeName == message.TagTypeName)) {
+                    foreach (TagViewModel vm in Items.Where(vm => vm.Model.Name == message.TagName)) {
                         vm.Model.Priority = (byte)message.Argument;
                     }
 
@@ -152,7 +152,7 @@ namespace ClipboardMachinery.Components.TagLister {
                     break;
 
                 case TagEvent.TagEventType.TypeDescriptionChanged:
-                    foreach (TagViewModel vm in Items.Where(vm => vm.Model.TypeName == message.TagTypeName)) {
+                    foreach (TagViewModel vm in Items.Where(vm => vm.Model.Name == message.TagName)) {
                         vm.Model.Description = (string)message.Argument;
                     }
                     break;

@@ -40,7 +40,7 @@ namespace ClipboardMachinery.Plumbing {
                 .AddFacility<TypedFactoryFacility>()
                 .AddFacility<EventAggregatorFacility>()
                 .Install(FromAssembly.Named("ClipboardMachinery.Core"))
-                .Install(FromAssembly.This());
+                .Install(FromAssembly.This(new WindsorBootstrap()));
 
             logger = container.Resolve<ILogger>();
         }

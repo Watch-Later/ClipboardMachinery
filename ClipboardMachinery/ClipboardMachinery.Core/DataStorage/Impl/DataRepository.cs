@@ -330,15 +330,18 @@ namespace ClipboardMachinery.Core.DataStorage.Impl {
             ITagKindSchema schema = tagKindManager.GetSchemaFor(ttype.Kind);
 
             // Skip tag if there is no schema that would allow parsing the value
-            // ReSharper disable once ConvertIfStatementToReturnStatement
-            // ReSharper disable once UseNullPropagation
-            // ReSharper disable once InvertIf
             if (schema == null) {
                 Logger.Error($"Unable resolve persistent value for tag type with name '{tagType}', no schema defined for data kind '{ttype.Kind.Name}'!");
                 return null;
             }
 
-            return schema.ToPersistentValue(value);
+            // Try to write value using schema handler
+            if (!schema.TryWrite(value, out string persistentValue)) {
+                Logger.Error($"Unable resolve persistent value for tag type with name '{tagType}', failed to write value '{value}' using schema handler!");
+                return null;
+            }
+
+            return persistentValue;
         }
 
         private async Task UpdateDataProvidersOffset<T>(int value) {

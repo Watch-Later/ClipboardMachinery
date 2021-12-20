@@ -2,24 +2,22 @@
 
 namespace ClipboardMachinery.Core.TagKind.Impl.Schemas {
 
-    public class UriTagKindSchema : ITagKindSchema {
+    public class UriTagKindSchema : TagKindSchema<Uri> {
 
         #region Properties
 
-        public Type Kind { get; } = typeof(Uri);
+        public override string Name { get; } = "Uniform Resource Identifier";
 
-        public string Name { get; } = "Uniform Resource Identifier";
+        public override string Description { get; } = "A value representing an URL address, SSH connection or file system path.";
 
-        public string Description { get; } = "Absolute resource identifier such as URL address, SSH connection or file system path.";
-
-        public string Icon { get; } = "IconCompass";
+        public override string Icon { get; } = "IconCompass";
 
         #endregion
 
         #region Logic
 
-        public bool TryParse(string value, out object result) {
-            if (value.Length > 3 && value.Substring(1,1) == ":") {
+        public override bool TryRead(string value, out Uri result) {
+            if (value.Length > 3 && value.Substring(1, 1) == ":") {
                 value = "file:///" + value;
             }
 
@@ -34,12 +32,19 @@ namespace ClipboardMachinery.Core.TagKind.Impl.Schemas {
             return false;
         }
 
-        public string ToPersistentValue(object value) {
-            if (value is Uri resource) {
-                return resource.AbsoluteUri;
+        public override bool TryWrite(Uri value, out string result) {
+            result = value.AbsoluteUri;
+            return true;
+        }
+
+        public override string GetText(Uri value) {
+            string displayValue = value.AbsoluteUri;
+
+            if (displayValue.StartsWith("file:///")) {
+                displayValue = displayValue.Substring(8);
             }
 
-            return value.ToString();
+            return displayValue;
         }
 
         #endregion

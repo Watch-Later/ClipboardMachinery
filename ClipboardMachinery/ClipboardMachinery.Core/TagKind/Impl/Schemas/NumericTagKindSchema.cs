@@ -1,25 +1,22 @@
-﻿using System;
-using System.Globalization;
+﻿using System.Globalization;
 
 namespace ClipboardMachinery.Core.TagKind.Impl.Schemas {
 
-    public class NumericTagKindSchema : ITagKindSchema {
+    public class NumericTagKindSchema : TagKindSchema<decimal> {
 
         #region Properties
 
-        public Type Kind { get; } = typeof(decimal);
+        public override string Name { get; } = "Numeric";
 
-        public string Name { get; } = "Numeric";
+        public override string Description { get; } = "A value stored as number allowing for decimal places if desired.";
 
-        public string Description { get; } = "A value stored as number allowing for decimal places if desired.";
-
-        public string Icon { get; } = "IconNumeric";
+        public override string Icon { get; } = "IconNumeric";
 
         #endregion
 
         #region Logic
 
-        public bool TryParse(string value, out object result) {
+        public override bool TryRead(string value, out decimal result) {
             bool isSuccessfullyParsed = decimal.TryParse(
                 s: value,
                 style: NumberStyles.AllowDecimalPoint | NumberStyles.AllowTrailingWhite,
@@ -31,20 +28,13 @@ namespace ClipboardMachinery.Core.TagKind.Impl.Schemas {
             return isSuccessfullyParsed;
         }
 
-        public string ToPersistentValue(object value) {
-            switch (value) {
-                case decimal decimalValue:
-                    return decimalValue.ToString(CultureInfo.InvariantCulture);
+        public override bool TryWrite(decimal value, out string result) {
+            result = value.ToString(CultureInfo.InvariantCulture);
+            return true;
+        }
 
-                case string textValue:
-                    if (TryParse(textValue, out object result)) {
-                        // ReSharper disable once TailRecursiveCall
-                        return ToPersistentValue(result);
-                    }
-                    break;
-            }
-
-            return string.Empty;
+        public override string GetText(decimal value) {
+            return value.ToString(CultureInfo.InvariantCulture);
         }
 
         #endregion

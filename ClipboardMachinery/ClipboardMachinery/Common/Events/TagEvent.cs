@@ -22,7 +22,7 @@ namespace ClipboardMachinery.Common.Events {
 
         public int? TagId { get; private set; }
 
-        public string TagTypeName { get; private set; }
+        public string TagName { get; private set; }
 
         public int? RelatedClipId { get; private set; }
 
@@ -39,7 +39,7 @@ namespace ClipboardMachinery.Common.Events {
         public static TagEvent CreateTagAddedEvent(int clipId, TagModel tag) {
             return new TagEvent(TagEventType.TagAdded) {
                 TagId = tag.Id,
-                TagTypeName = tag.TypeName,
+                TagName = tag.Name,
                 RelatedClipId = clipId,
                 Argument = tag
             };
@@ -48,49 +48,49 @@ namespace ClipboardMachinery.Common.Events {
         public static TagEvent CreateTagRemovedEvent(TagModel tag) {
             return new TagEvent(TagEventType.TagRemoved) {
                 TagId = tag.Id,
-                TagTypeName = tag.TypeName
+                TagName = tag.Name
             };
         }
 
         public static TagEvent CreateTagValueChangedEvent(TagModel tag) {
             return new TagEvent(TagEventType.TagValueChanged) {
                 TagId = tag.Id,
-                TagTypeName = tag.TypeName,
+                TagName = tag.Name,
                 Argument = tag.Value
             };
         }
 
         public static TagEvent CreateTypeAddedEvent(TagTypeModel tagType) {
             return new TagEvent(TagEventType.TypeAdded) {
-                TagTypeName = tagType.Name,
+                TagName = tagType.Name,
                 Argument = tagType
             };
         }
 
         public static TagEvent CreateTypeDescriptionChangedEvent(TagTypeModel tagType) {
             return new TagEvent(TagEventType.TypeDescriptionChanged) {
-                TagTypeName = tagType.Name,
+                TagName = tagType.Name,
                 Argument = tagType.Description
             };
         }
 
         public static TagEvent CreateTypePriorityChangedEvent(TagTypeModel tagType) {
             return new TagEvent(TagEventType.TypePriorityChanged) {
-                TagTypeName = tagType.Name,
+                TagName = tagType.Name,
                 Argument = tagType.Priority
             };
         }
 
         public static TagEvent CreateTypeColorChangedEvent(TagTypeModel tagType) {
             return new TagEvent(TagEventType.TypeColorChanged) {
-                TagTypeName = tagType.Name,
+                TagName = tagType.Name,
                 Argument = tagType.Color
             };
         }
 
         public static TagEvent CreateTypeRemovedEvent(TagTypeModel tagType) {
             return new TagEvent(TagEventType.TypeRemoved) {
-                TagTypeName = tagType.Name,
+                TagName = tagType.Name,
                 Argument = tagType
             };
         }

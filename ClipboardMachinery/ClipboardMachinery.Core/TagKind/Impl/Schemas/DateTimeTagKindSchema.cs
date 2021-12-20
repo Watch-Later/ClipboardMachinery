@@ -3,52 +3,47 @@ using System.Globalization;
 
 namespace ClipboardMachinery.Core.TagKind.Impl.Schemas {
 
-    public class DateTimeTagKindSchema : ITagKindSchema {
+    public class DateTimeTagKindSchema : TagKindSchema<DateTime> {
 
         #region Properties
 
-        public Type Kind { get; } = typeof(DateTime);
+        public override string Name { get; } = "Date and time";
 
-        public string Name { get; } = "Date and time";
+        public override string Description => $"A value with date and time components in '{targetCulture.DateTimeFormat.ShortDatePattern} {targetCulture.DateTimeFormat.ShortTimePattern}' format.";
 
-        public string Description => $"Information about date and time in '{TargetCultureInfo.DateTimeFormat.ShortDatePattern} {TargetCultureInfo.DateTimeFormat.ShortTimePattern}' format.";
-
-        public string Icon { get; } = "IconDateTime";
+        public override string Icon { get; } = "IconDateTime";
 
         #endregion
 
         #region Fields
 
-        private readonly CultureInfo TargetCultureInfo = CultureInfo.CreateSpecificCulture("cs-CZ");
+        private readonly CultureInfo targetCulture = CultureInfo.CreateSpecificCulture("cs-CZ");
 
         #endregion
 
         #region Logic
 
-        public bool TryParse(string value, out object result) {
-            if (DateTime.TryParse(value, TargetCultureInfo, DateTimeStyles.AllowWhiteSpaces, out DateTime parsedDateTime)) {
+        public override bool TryRead(string value, out DateTime result) {
+            if (!string.IsNullOrWhiteSpace(value)) {
+                value = value.Trim('"');
+            }
+
+            if (DateTime.TryParse(value, targetCulture, DateTimeStyles.AllowWhiteSpaces, out DateTime parsedDateTime)) {
                 result = parsedDateTime;
                 return true;
             }
 
-            result = null;
+            result = DateTime.MinValue;
             return false;
         }
 
-        public string ToPersistentValue(object value) {
-            switch (value) {
-                case DateTime dateTime:
-                    return dateTime.ToString(TargetCultureInfo);
+        public override bool TryWrite(DateTime value, out string result) {
+            result = value.ToString(targetCulture);
+            return true;
+        }
 
-                case string textValue:
-                    if (TryParse(textValue, out object result)) {
-                        // ReSharper disable once TailRecursiveCall
-                        return ToPersistentValue(result);
-                    }
-                    break;
-            }
-
-            return string.Empty;
+        public override string GetText(DateTime value) {
+            return value.ToString(targetCulture);
         }
 
         #endregion

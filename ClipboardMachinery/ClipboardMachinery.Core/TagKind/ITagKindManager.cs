@@ -9,9 +9,11 @@ namespace ClipboardMachinery.Core.TagKind {
 
         ITagKindSchema GetSchemaFor(Type kindType);
 
-        bool IsValid(Type kindType, string input);
+        bool IsValid(Type kindType, string value);
 
-        bool TryParse(Type kindType, string input, out object result);
+        object Read(Type kindType, string value);
+
+        string GetText(Type kind, object value);
 
     }
 

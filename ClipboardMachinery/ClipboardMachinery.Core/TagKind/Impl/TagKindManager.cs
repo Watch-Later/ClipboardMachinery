@@ -42,14 +42,25 @@ namespace ClipboardMachinery.Core.TagKind.Impl {
                 : null;
         }
 
-        public bool IsValid(Type kindType, string input) {
-            return TryParse(kindType, input, out _);
+        public object Read(Type kindType, string value) {
+            ITagKindSchema tagKindSchema = GetSchemaFor(kindType);
+
+            if (tagKindSchema == null) {
+                return null;
+            }
+
+            tagKindSchema.TryRead(value, out object result);
+            return result;
         }
 
-        public bool TryParse(Type kindType, string input, out object result) {
-            result = null;
+        public bool IsValid(Type kindType, string value) {
             ITagKindSchema tagKindSchema = GetSchemaFor(kindType);
-            return tagKindSchema?.TryParse(input, out result) == true;
+            return tagKindSchema != null && tagKindSchema.TryRead(value, out object _);
+        }
+
+        public string GetText(Type kindType, object value) {
+            ITagKindSchema tagKindSchema = GetSchemaFor(kindType);
+            return tagKindSchema == null ? value?.ToString() : tagKindSchema.GetText(value);
         }
 
         #endregion

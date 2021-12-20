@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Windows.Media;
 using ClipboardMachinery.Components.DialogOverlay;
 using Castle.Core;
+using ClipboardMachinery.Core.TagKind;
 
 namespace ClipboardMachinery.Components.Tag {
 
@@ -30,27 +31,37 @@ namespace ClipboardMachinery.Components.Tag {
 
                 model = value;
                 NotifyOfPropertyChange();
+                NotifyOfPropertyChange(() => DisplayValue);
                 NotifyOfPropertyChange(() => HasDescription);
+                NotifyOfPropertyChange(() => BackgroundColor);
             }
         }
 
-        public bool HasDescription
-            => !string.IsNullOrWhiteSpace(Model?.Description);
+        public string DisplayValue {
+            get => Model?.Value != null ? tagKindManager.GetText(Model.Kind, Model.Value) : null;
+        }
 
-        public Color BackgroundColor
-            => Model?.Color.HasValue == true ? Model.Color.Value : Colors.Transparent;
+        public bool HasDescription {
+            get => !string.IsNullOrWhiteSpace(Model?.Description);
+        }
+
+        public Color BackgroundColor {
+            get => Model?.Color.HasValue == true ? Model.Color.Value : Colors.Transparent;
+        }
 
         #endregion
 
         #region Fields
 
+        private readonly ITagKindManager tagKindManager;
         private readonly IDialogOverlayManager dialogOverlayManager;
 
         private TagModel model;
 
         #endregion
 
-        public TagViewModel(TagModel tagModel, IDialogOverlayManager dialogOverlayManager) {
+        public TagViewModel(TagModel tagModel, ITagKindManager tagKindManager, IDialogOverlayManager dialogOverlayManager) {
+            this.tagKindManager = tagKindManager;
             this.dialogOverlayManager = dialogOverlayManager;
             Model = tagModel;
         }
@@ -59,6 +70,10 @@ namespace ClipboardMachinery.Components.Tag {
 
         private void OnModelPropertyChanged(object sender, PropertyChangedEventArgs e) {
             switch (e.PropertyName) {
+                case nameof(TagModel.Value):
+                    NotifyOfPropertyChange(() => DisplayValue);
+                    break;
+
                 case nameof(TagModel.Color):
                     NotifyOfPropertyChange(() => BackgroundColor);
                     break;

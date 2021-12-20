@@ -263,7 +263,7 @@ namespace ClipboardMachinery.Components.Clip {
         }
 
         private void OnModelTagCollectionChanged(object sender, NotifyCollectionChangedEventArgs e) {
-            favoriteButton.IsToggled = Model != null && Model.Tags.Any(tag => tag.TypeName == SystemTagTypes.CategoryTagType.Name);
+            favoriteButton.IsToggled = Model != null && Model.Tags.Any(tag => tag.Name == SystemTagTypes.CategoryTagType.Name);
         }
 
         private void OnModelPropertyChanged(object sender, PropertyChangedEventArgs e) {
@@ -332,7 +332,7 @@ namespace ClipboardMachinery.Components.Clip {
         }
 
         public Task ToggleFavorite(ActionButtonViewModel source) {
-            TagModel[] categoryTags = Model.Tags.Where(tag => tag.TypeName == SystemTagTypes.CategoryTagType.Name).ToArray();
+            TagModel[] categoryTags = Model.Tags.Where(tag => tag.Name == SystemTagTypes.CategoryTagType.Name).ToArray();
 
             return Task.Run(async () => {
                 if (categoryTags.Length == 0) {

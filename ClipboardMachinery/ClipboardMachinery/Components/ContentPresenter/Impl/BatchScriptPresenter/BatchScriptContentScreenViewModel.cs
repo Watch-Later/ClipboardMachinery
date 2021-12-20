@@ -127,7 +127,7 @@ namespace ClipboardMachinery.Components.ContentPresenter.Impl.BatchScriptPresent
 
             return Task.Run(async () => {
                 PrintProcessOutput("Starting command line process...");
-                string workingDirectory = Clip.Model.Tags.FirstOrDefault(t => t.TypeName == SystemTagTypes.WorkspaceTagType.Name)?.Value ?? Directory.GetCurrentDirectory();
+                string workingDirectory = Clip.Model.Tags.FirstOrDefault(t => t.Name == SystemTagTypes.WorkspaceTagType.Name)?.Value.ToString() ?? Directory.GetCurrentDirectory();
                 int exitCode = await RunCommandAsync(Clip.Model.Content, workingDirectory, cts.Token).ConfigureAwait(false);
                 PrintProcessOutput($"Process exited with code {exitCode}.");
                 toggleButton.IsToggled = false;

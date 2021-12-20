@@ -30,7 +30,7 @@
             FontFamily="Calibri"
             FontWeight="Bold"
             Foreground="{StaticResource TagTextBrush}"
-            Text="{Binding Model.TypeName, FallbackValue='tag'}"
+            Text="{Binding Model.Name, FallbackValue='tag'}"
             TextAlignment="Left"
             TextDecorations="{x:Null}">
 
@@ -94,7 +94,7 @@
                 VerticalAlignment="Center"
                 FontFamily="Calibri Light"
                 Foreground="{StaticResource TagTextBrush}"
-                Text="{Binding Model.Value, FallbackValue='value'}"
+                Text="{Binding DisplayValue, FallbackValue='value'}"
                 TextAlignment="Left" />
         </Border>
     </Grid>

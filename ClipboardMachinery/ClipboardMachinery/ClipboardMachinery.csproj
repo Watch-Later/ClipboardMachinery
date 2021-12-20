@@ -275,6 +275,7 @@
     </Compile>
     <Compile Include="OverlayDialogs\TagTypeEditor\TagTypeEditorViewModel.cs" />
     <Compile Include="Plumbing\Factories\IWindowFactory.cs" />
+    <Compile Include="Plumbing\Customization\WindsorBootstrap.cs" />
     <Compile Include="Windows\Shell\RotatingGear.xaml.cs">
       <DependentUpon>RotatingGear.xaml</DependentUpon>
     </Compile>

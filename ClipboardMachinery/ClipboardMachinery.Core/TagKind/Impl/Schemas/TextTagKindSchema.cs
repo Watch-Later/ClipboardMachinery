@@ -1,30 +1,36 @@
-﻿using System;
+﻿namespace ClipboardMachinery.Core.TagKind.Impl.Schemas {
 
-namespace ClipboardMachinery.Core.TagKind.Impl.Schemas {
-
-    public class TextTagKindSchema : ITagKindSchema {
+    public class TextTagKindSchema : TagKindSchema<string> {
 
         #region Properties
 
-        public Type Kind { get; } = typeof(string);
+        public override string Name { get; } = "Text";
 
-        public string Name { get; } = "Text";
+        public override string Description { get; } = "A value stored as a plain text.";
 
-        public string Description { get; } = "A value stored as a plain text without any restrictions.";
-
-        public string Icon { get; } = "IconText";
+        public override string Icon { get; } = "IconText";
 
         #endregion
 
         #region Logic
 
-        public bool TryParse(string value, out object result) {
+        public bool TryRead(string value, out object result) {
             result = value;
             return true;
         }
 
-        public string ToPersistentValue(object value) {
-            return value.ToString();
+        public override bool TryRead(string value, out string result) {
+            result = value;
+            return true;
+        }
+
+        public override bool TryWrite(string value, out string result) {
+            result = value;
+            return true;
+        }
+
+        public override string GetText(string value) {
+            return value;
         }
 
         #endregion

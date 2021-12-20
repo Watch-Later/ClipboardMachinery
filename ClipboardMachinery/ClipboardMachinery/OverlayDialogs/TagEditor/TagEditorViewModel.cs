@@ -187,14 +187,14 @@ namespace ClipboardMachinery.OverlayDialogs.TagEditor {
             TagTypeLister.ConductWith(this);
             TagTypeLister.PropertyChanged += OnTagTypeListerPropertyChanged;
 
-            if (!string.IsNullOrWhiteSpace(tagModel.TypeName)) {
-                Tag = tagModel.TypeName;
+            if (!string.IsNullOrWhiteSpace(tagModel.Name)) {
+                Tag = tagModel.Name;
             }
 
-            if (!string.IsNullOrWhiteSpace(tagModel.Value)) {
-                ITagKindSchema tagKindSchema = this.tagKindManager.GetSchemaFor(tagModel.ValueKind);
+            if (tagModel.Value != null) {
+                ITagKindSchema tagKindSchema = this.tagKindManager.GetSchemaFor(tagModel.Kind);
                 TagKind = tagKindSchema != null ? tagKindFactory.CreateTagKind(tagKindSchema) : null;
-                Value = tagModel.Value;
+                Value = tagKindSchema?.GetText(tagModel.Value);
             }
 
             Color = tagModel.Color.GetValueOrDefault();
@@ -292,13 +292,15 @@ namespace ClipboardMachinery.OverlayDialogs.TagEditor {
                 return;
             }
 
+            object currentValue = tagKindManager.Read(TagKind.Schema.Kind, Value);
+
             // Create new tag or update values if changed
             if (IsCreatingNew) {
-                TagModel newModel = await dataRepository.CreateTag<TagModel>(targetClip.Id, Tag, Value);
+                TagModel newModel = await dataRepository.CreateTag<TagModel>(targetClip.Id, Tag, currentValue);
                 await eventAggregator.PublishOnCurrentThreadAsync(TagEvent.CreateTagAddedEvent(targetClip.Id, newModel));
 
             } else {
-                Model.Value = await dataRepository.UpdateTag(Model.Id, Value);
+                Model.Value = await dataRepository.UpdateTag(Model.Id, currentValue);
                 await eventAggregator.PublishOnCurrentThreadAsync(TagEvent.CreateTagValueChangedEvent(Model));
             }
 

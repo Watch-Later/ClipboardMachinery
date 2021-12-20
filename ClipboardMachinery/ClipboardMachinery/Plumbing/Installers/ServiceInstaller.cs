@@ -27,7 +27,7 @@ namespace ClipboardMachinery.Plumbing.Installers {
                         Dependency.OnConfigValue("databasePath", "storage.sqlite"),
                         Dependency.OnConfigValue("databaseVersion", "3")
                     )
-                    .LifestyleBoundToNearest<IDataRepository>()
+                    .LifestyleSingleton()
             );
 
             container.Register(

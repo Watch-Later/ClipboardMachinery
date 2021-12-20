@@ -17,7 +17,7 @@ namespace ClipboardMachinery.Core.DataStorage.Schema {
         public TagType Type { get; set; }
 
         [Required]
-        public object Value { get; set; }
+        public string Value { get; set; }
 
     }
 

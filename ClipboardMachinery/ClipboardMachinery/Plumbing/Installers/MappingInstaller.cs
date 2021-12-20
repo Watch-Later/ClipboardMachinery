@@ -5,21 +5,23 @@ using Castle.Windsor;
 using ClipboardMachinery.Components.Clip;
 using ClipboardMachinery.Components.Tag;
 using ClipboardMachinery.Components.TagType;
+using ClipboardMachinery.Core.DataStorage;
 using ClipboardMachinery.Core.DataStorage.Schema;
+using ClipboardMachinery.Core.TagKind;
+using ClipboardMachinery.Plumbing.Customization;
 
 namespace ClipboardMachinery.Plumbing.Installers {
 
+    [InstallerPriority(200)]
     public class MappingInstaller : IWindsorInstaller {
 
         public void Install(IWindsorContainer container, IConfigurationStore store) {
-            container.Register(
-                Component.For<IMapper>().Instance(
-                    new MapperConfiguration(ConfigureMapper).CreateMapper()
-                )
-            );
+            container.Register(Component.For<IMapper>().Instance(
+                new MapperConfiguration(config => ConfigureMapper(config, container.Resolve<ITagKindManager>())).CreateMapper()
+            ));
         }
 
-        private static void ConfigureMapper(IMapperConfigurationExpression config) {
+        private static void ConfigureMapper(IMapperConfigurationExpression config, ITagKindManager tagKindManager) {
                 // Mappings from database to view
                 config
                     .CreateMap<Clip, ClipModel>();
@@ -33,8 +35,9 @@ namespace ClipboardMachinery.Plumbing.Installers {
 
                 config
                     .CreateMap<Tag, TagModel>()
-                    .ForMember(dest => dest.TypeName, opt => opt.MapFrom(source => source.Type.Name))
-                    .ForMember(dest => dest.ValueKind, opt => opt.MapFrom(source => source.Type.Kind))
+                    .ForMember(dest => dest.Value, opt => opt.MapFrom(source => tagKindManager.Read(source.Type.Kind, source.Value)))
+                    .ForMember(dest => dest.Name, opt => opt.MapFrom(source => source.Type.Name))
+                    .ForMember(dest => dest.Kind, opt => opt.MapFrom(source => source.Type.Kind))
                     .ForMember(dest => dest.Priority, opt => opt.MapFrom(source => source.Type.Priority))
                     .ForMember(dest => dest.Description, opt => {
                         opt.MapFrom(source => source.Type.Description);
