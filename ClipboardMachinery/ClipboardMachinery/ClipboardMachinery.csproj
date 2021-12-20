@@ -263,6 +263,7 @@
     <Compile Include="Pages\TagTypes\TagTypesViewModel.cs" />
     <Compile Include="Plumbing\Customization\DoNotWireActiveItem.cs" />
     <Compile Include="Plumbing\Customization\AppVeyorPackageResolver.cs" />
+    <Compile Include="Plumbing\Customization\WindsorBootstrap.cs" />
     <Compile Include="Plumbing\Factories\IContentScreenFactory.cs" />
     <Compile Include="Plumbing\Factories\ITagKindFactory.cs" />
     <Compile Include="Plumbing\Factories\IClipFactory.cs" />
