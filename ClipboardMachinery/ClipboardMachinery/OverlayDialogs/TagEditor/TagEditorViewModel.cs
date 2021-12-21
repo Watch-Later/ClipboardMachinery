@@ -191,12 +191,6 @@ namespace ClipboardMachinery.OverlayDialogs.TagEditor {
                 Tag = tagModel.Name;
             }
 
-            if (tagModel.Value != null) {
-                ITagKindSchema tagKindSchema = this.tagKindManager.GetSchemaFor(tagModel.Kind);
-                TagKind = tagKindSchema != null ? tagKindFactory.CreateTagKind(tagKindSchema) : null;
-                Value = tagKindSchema?.GetText(tagModel.Value);
-            }
-
             Color = tagModel.Color.GetValueOrDefault();
 
             // Create extension control buttons
@@ -230,7 +224,7 @@ namespace ClipboardMachinery.OverlayDialogs.TagEditor {
                 return ValidationResult.Success;
             }
 
-            return editor.tagKindManager.IsValid(editor.TagKind.Schema.Kind, newTagValue)
+            return editor.tagKindManager.IsValid(editor.Tag, editor.TagKind.Schema.Kind, newTagValue)
                 ? ValidationResult.Success
                 : new ValidationResult($"Tag value is not valid, expected a {editor.TagKind.Schema.Name.ToLowerInvariant()} value.", new[] { nameof(Value) });
         }
@@ -238,6 +232,23 @@ namespace ClipboardMachinery.OverlayDialogs.TagEditor {
         #endregion
 
         #region Handlers
+
+        protected override async Task OnInitializeAsync(CancellationToken cancellationToken) {
+            await base.OnInitializeAsync(cancellationToken);
+
+            if (Model.Value == null) {
+                return;
+            }
+
+            ITagKindSchema tagKindSchema = tagKindManager.GetSchemaFor(Model.Kind);
+
+            if (tagKindSchema == null) {
+                return;
+            }
+
+            TagKind = tagKindFactory.CreateTagKind(tagKindSchema);
+            Value = await tagKindSchema.GetText(Model.Value);
+        }
 
         protected override Task OnDeactivateAsync(bool close, CancellationToken cancellationToken) {
             if (!close) {
@@ -292,7 +303,7 @@ namespace ClipboardMachinery.OverlayDialogs.TagEditor {
                 return;
             }
 
-            object currentValue = tagKindManager.Read(TagKind.Schema.Kind, Value);
+            object currentValue = tagKindManager.Read(Tag, TagKind.Schema.Kind, Value);
 
             // Create new tag or update values if changed
             if (IsCreatingNew) {

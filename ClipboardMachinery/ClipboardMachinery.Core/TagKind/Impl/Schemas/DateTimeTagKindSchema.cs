@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Globalization;
+using System.Threading.Tasks;
 
 namespace ClipboardMachinery.Core.TagKind.Impl.Schemas {
 
@@ -23,7 +24,7 @@ namespace ClipboardMachinery.Core.TagKind.Impl.Schemas {
 
         #region Logic
 
-        public override bool TryRead(string value, out DateTime result) {
+        public override bool TryRead(string tagType, string value, out DateTime result) {
             if (!string.IsNullOrWhiteSpace(value)) {
                 value = value.Trim('"');
             }
@@ -42,8 +43,8 @@ namespace ClipboardMachinery.Core.TagKind.Impl.Schemas {
             return true;
         }
 
-        public override string GetText(DateTime value) {
-            return value.ToString(targetCulture);
+        public override Task<string> GetText(DateTime value) {
+            return Task.FromResult(value.ToString(targetCulture));
         }
 
         #endregion

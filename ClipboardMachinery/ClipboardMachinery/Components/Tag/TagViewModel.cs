@@ -31,14 +31,22 @@ namespace ClipboardMachinery.Components.Tag {
 
                 model = value;
                 NotifyOfPropertyChange();
-                NotifyOfPropertyChange(() => DisplayValue);
                 NotifyOfPropertyChange(() => HasDescription);
                 NotifyOfPropertyChange(() => BackgroundColor);
+                // TODO: Read display value again
             }
         }
 
         public string DisplayValue {
-            get => Model?.Value != null ? tagKindManager.GetText(Model.Kind, Model.Value) : null;
+            get => displayValue;
+            private set {
+                if (displayValue == value) {
+                    return;
+                }
+
+                displayValue = value;
+                NotifyOfPropertyChange();
+            }
         }
 
         public bool HasDescription {
@@ -57,6 +65,7 @@ namespace ClipboardMachinery.Components.Tag {
         private readonly IDialogOverlayManager dialogOverlayManager;
 
         private TagModel model;
+        private string displayValue;
 
         #endregion
 
@@ -67,6 +76,19 @@ namespace ClipboardMachinery.Components.Tag {
         }
 
         #region Handlers
+
+        protected override async Task OnInitializeAsync(CancellationToken cancellationToken) {
+            await base.OnInitializeAsync(cancellationToken);
+            DisplayValue = Model?.Value != null ? await tagKindManager.GetText(Model.Kind, Model.Value) : null;
+        }
+
+        protected override Task OnDeactivateAsync(bool close, CancellationToken cancellationToken) {
+            if (close) {
+                Model = null;
+            }
+
+            return Task.CompletedTask;
+        }
 
         private void OnModelPropertyChanged(object sender, PropertyChangedEventArgs e) {
             switch (e.PropertyName) {
@@ -82,14 +104,6 @@ namespace ClipboardMachinery.Components.Tag {
                     NotifyOfPropertyChange(() => HasDescription);
                     break;
             }
-        }
-
-        protected override Task OnDeactivateAsync(bool close, CancellationToken cancellationToken) {
-            if (close) {
-                Model = null;
-            }
-
-            return Task.CompletedTask;
         }
 
         #endregion

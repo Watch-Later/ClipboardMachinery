@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 
 namespace ClipboardMachinery.Core.TagKind {
 
@@ -16,11 +17,11 @@ namespace ClipboardMachinery.Core.TagKind {
 
         #endregion
 
-        bool TryRead(string value, out object result);
+        bool TryRead(string tagType, string value, out object result);
 
         bool TryWrite(object value, out string result);
 
-        string GetText(object value);
+        Task<string> GetText(object value);
 
     }
 
@@ -38,8 +39,8 @@ namespace ClipboardMachinery.Core.TagKind {
 
         #endregion
 
-        bool ITagKindSchema.TryRead(string value, out object result) {
-            bool wasParsed = TryRead(value, out TKind typedResult);
+        bool ITagKindSchema.TryRead(string tagType, string value, out object result) {
+            bool wasParsed = TryRead(tagType, value, out TKind typedResult);
             result = typedResult;
             return wasParsed;
         }
@@ -53,19 +54,19 @@ namespace ClipboardMachinery.Core.TagKind {
             return false;
         }
 
-        string ITagKindSchema.GetText(object value) {
+        Task<string> ITagKindSchema.GetText(object value) {
             if (value is TKind typedValue) {
                 return GetText(typedValue);
             }
 
-            return value?.ToString();
+            return Task.FromResult(value?.ToString());
         }
 
-        public abstract bool TryRead(string value, out TKind result);
+        public abstract bool TryRead(string tagType, string value, out TKind result);
 
         public abstract bool TryWrite(TKind value, out string result);
 
-        public abstract string GetText(TKind value);
+        public abstract Task<string> GetText(TKind value);
 
     }
 

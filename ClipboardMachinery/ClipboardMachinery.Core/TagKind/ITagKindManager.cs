@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace ClipboardMachinery.Core.TagKind {
 
@@ -7,13 +8,13 @@ namespace ClipboardMachinery.Core.TagKind {
 
         IReadOnlyList<ITagKindSchema> Schemas { get; }
 
-        ITagKindSchema GetSchemaFor(Type kindType);
+        ITagKindSchema GetSchemaFor(Type tagKind);
 
-        bool IsValid(Type kindType, string value);
+        bool IsValid(string tagType, Type tagKind, string value);
 
-        object Read(Type kindType, string value);
+        object Read(string tagType, Type tagKind, string value);
 
-        string GetText(Type kind, object value);
+        Task<string> GetText(Type tagKind, object value);
 
     }
 

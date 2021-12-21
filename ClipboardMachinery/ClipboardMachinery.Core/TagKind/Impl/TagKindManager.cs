@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Castle.Core.Logging;
 
 namespace ClipboardMachinery.Core.TagKind.Impl {
@@ -36,31 +37,31 @@ namespace ClipboardMachinery.Core.TagKind.Impl {
 
         #region Logic
 
-        public ITagKindSchema GetSchemaFor(Type kindType) {
-            return schemaMap.ContainsKey(kindType)
-                ? schemaMap[kindType]
+        public ITagKindSchema GetSchemaFor(Type tagKind) {
+            return schemaMap.ContainsKey(tagKind)
+                ? schemaMap[tagKind]
                 : null;
         }
 
-        public object Read(Type kindType, string value) {
-            ITagKindSchema tagKindSchema = GetSchemaFor(kindType);
+        public object Read(string tagType, Type tagKind, string value) {
+            ITagKindSchema tagKindSchema = GetSchemaFor(tagKind);
 
             if (tagKindSchema == null) {
                 return null;
             }
 
-            tagKindSchema.TryRead(value, out object result);
+            tagKindSchema.TryRead(tagType, value, out object result);
             return result;
         }
 
-        public bool IsValid(Type kindType, string value) {
-            ITagKindSchema tagKindSchema = GetSchemaFor(kindType);
-            return tagKindSchema != null && tagKindSchema.TryRead(value, out object _);
+        public bool IsValid(string tagType, Type tagKind, string value) {
+            ITagKindSchema tagKindSchema = GetSchemaFor(tagKind);
+            return tagKindSchema != null && tagKindSchema.TryRead(tagType, value, out object _);
         }
 
-        public string GetText(Type kindType, object value) {
-            ITagKindSchema tagKindSchema = GetSchemaFor(kindType);
-            return tagKindSchema == null ? value?.ToString() : tagKindSchema.GetText(value);
+        public Task<string> GetText(Type tagKind, object value) {
+            ITagKindSchema tagKindSchema = GetSchemaFor(tagKind);
+            return tagKindSchema == null ? Task.FromResult(value?.ToString()) : tagKindSchema.GetText(value);
         }
 
         #endregion

@@ -58,6 +58,7 @@ namespace ClipboardMachinery.Core.DataStorage.Impl {
             EnsureTable<Clip>();
             EnsureTable<Tag>();
             EnsureTable<TagType>();
+            EnsureTable<EnumType>();
 
             // Upgrade database if necessary
             using (IServiceScope scope = SetupFluentMigratorServices().CreateScope()) {

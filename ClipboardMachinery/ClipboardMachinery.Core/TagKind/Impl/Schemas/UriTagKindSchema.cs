@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 
 namespace ClipboardMachinery.Core.TagKind.Impl.Schemas {
 
@@ -16,7 +17,7 @@ namespace ClipboardMachinery.Core.TagKind.Impl.Schemas {
 
         #region Logic
 
-        public override bool TryRead(string value, out Uri result) {
+        public override bool TryRead(string tagType, string value, out Uri result) {
             if (value.Length > 3 && value.Substring(1, 1) == ":") {
                 value = "file:///" + value;
             }
@@ -37,14 +38,14 @@ namespace ClipboardMachinery.Core.TagKind.Impl.Schemas {
             return true;
         }
 
-        public override string GetText(Uri value) {
+        public override Task<string> GetText(Uri value) {
             string displayValue = value.AbsoluteUri;
 
             if (displayValue.StartsWith("file:///")) {
                 displayValue = displayValue.Substring(8);
             }
 
-            return displayValue;
+            return Task.FromResult(displayValue);
         }
 
         #endregion

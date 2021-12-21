@@ -1,4 +1,6 @@
-﻿namespace ClipboardMachinery.Core.TagKind.Impl.Schemas {
+﻿using System.Threading.Tasks;
+
+namespace ClipboardMachinery.Core.TagKind.Impl.Schemas {
 
     public class TextTagKindSchema : TagKindSchema<string> {
 
@@ -14,12 +16,7 @@
 
         #region Logic
 
-        public bool TryRead(string value, out object result) {
-            result = value;
-            return true;
-        }
-
-        public override bool TryRead(string value, out string result) {
+        public override bool TryRead(string tagType, string value, out string result) {
             result = value;
             return true;
         }
@@ -29,8 +26,8 @@
             return true;
         }
 
-        public override string GetText(string value) {
-            return value;
+        public override Task<string> GetText(string value) {
+            return Task.FromResult(value);
         }
 
         #endregion

@@ -1,4 +1,5 @@
 ﻿using System.Globalization;
+using System.Threading.Tasks;
 
 namespace ClipboardMachinery.Core.TagKind.Impl.Schemas {
 
@@ -16,7 +17,7 @@ namespace ClipboardMachinery.Core.TagKind.Impl.Schemas {
 
         #region Logic
 
-        public override bool TryRead(string value, out decimal result) {
+        public override bool TryRead(string tagType, string value, out decimal result) {
             bool isSuccessfullyParsed = decimal.TryParse(
                 s: value,
                 style: NumberStyles.AllowDecimalPoint | NumberStyles.AllowTrailingWhite,
@@ -33,8 +34,8 @@ namespace ClipboardMachinery.Core.TagKind.Impl.Schemas {
             return true;
         }
 
-        public override string GetText(decimal value) {
-            return value.ToString(CultureInfo.InvariantCulture);
+        public override Task<string> GetText(decimal value) {
+            return Task.FromResult(value.ToString(CultureInfo.InvariantCulture));
         }
 
         #endregion

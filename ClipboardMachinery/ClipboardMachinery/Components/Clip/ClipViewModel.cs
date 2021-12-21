@@ -216,6 +216,8 @@ namespace ClipboardMachinery.Components.Clip {
 
             // Set backing clip model
             Tags = tagLister;
+            Tags.ConductWith(this);
+
             Model = model;
         }
 

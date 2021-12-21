@@ -278,6 +278,7 @@
     <Compile Include="DataStorage\Migrations\AddTagTypePriority.cs" />
     <Compile Include="DataStorage\Migrations\RemoveClipCreatedColumn.cs" />
     <Compile Include="DataStorage\Migrations\AddClipPresenterColumn.cs" />
+    <Compile Include="DataStorage\Schema\EnumType.cs" />
     <Compile Include="DataStorage\Validation\DataRepositoryCheckAttribute.cs" />
     <Compile Include="Plumbing\Installers\LoggingInstaller.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -300,6 +301,8 @@
     <Compile Include="Services\HotKeys\IHotKeyService.cs" />
     <Compile Include="Services\HotKeys\KeyModifiers.cs" />
     <Compile Include="SystemTagTypes.cs" />
+    <Compile Include="TagKind\Impl\DataTypes\EnumReference.cs" />
+    <Compile Include="TagKind\Impl\Schemas\EnumTagKindSchema.cs" />
     <Compile Include="TagKind\Impl\Schemas\UriTagKindSchema.cs" />
     <Compile Include="TagKind\ITagKindSchemaFactory.cs" />
     <Compile Include="TagKind\ITagKindManager.cs" />
