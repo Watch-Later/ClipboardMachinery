@@ -14,14 +14,11 @@ namespace ClipboardMachinery.Pages.History {
 
         #region IScreenPage
 
-        public string Title
-            => "History";
+        public string Title { get; } = "History";
 
-        public string Icon
-            => "IconHistory";
+        public string Icon { get; } = "IconHistory";
 
-        public byte Order
-            => 1;
+        public byte Order { get; } = 1;
 
         #endregion
 

@@ -257,6 +257,10 @@
       <DependentUpon>TagOverviewView.xaml</DependentUpon>
     </Compile>
     <Compile Include="OverlayDialogs\TagOverview\TagOverviewViewModel.cs" />
+    <Compile Include="Pages\Favorites\FavoritesView.xaml.cs">
+      <DependentUpon>FavoritesView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Favorites\FavoritesViewModel.cs" />
     <Compile Include="Pages\TagTypes\TagTypesView.xaml.cs">
       <DependentUpon>TagTypesView.xaml</DependentUpon>
     </Compile>
@@ -301,7 +305,6 @@
     <Compile Include="Plumbing\Installers\ShellInstaller.cs" />
     <Compile Include="Components\Navigator\NavigatorViewModel.cs" />
     <Compile Include="Windows\Shell\ShellViewModel.cs" />
-    <Compile Include="Pages\Favorites\FavoritesViewModel.cs" />
     <Compile Include="Pages\History\HistoryViewModel.cs" />
     <Compile Include="Components\Clip\ClipViewModel.cs" />
     <Compile Include="Pages\Search\SearchViewModel.cs" />
@@ -310,9 +313,6 @@
     </Compile>
     <Compile Include="Windows\Shell\ShellView.xaml.cs">
       <DependentUpon>ShellView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Pages\Favorites\FavoritesView.xaml.cs">
-      <DependentUpon>FavoritesView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\History\HistoryView.xaml.cs">
       <DependentUpon>HistoryView.xaml</DependentUpon>
@@ -431,6 +431,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Pages\Favorites\FavoritesView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Pages\TagTypes\TagTypesView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -487,10 +491,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Windows\Shell\ShellView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Pages\Favorites\FavoritesView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

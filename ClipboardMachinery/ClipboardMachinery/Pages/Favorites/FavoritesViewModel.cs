@@ -12,19 +12,16 @@ namespace ClipboardMachinery.Pages.Favorites {
 
         #region IScreenPage
 
-        public string Title
-            => "Favorites";
+        public string Title { get; } = "Favorites";
 
-        public string Icon
-            => "IconStarFull";
+        public string Icon { get; } = "IconStarFull";
 
-        public byte Order
-            => 2;
+        public byte Order { get; } = 2;
 
         #endregion
 
         public FavoritesViewModel(IDataRepository dataRepository, IEventAggregator eventAggregator, IClipFactory vmFactory) : base(15, dataRepository, eventAggregator, vmFactory) {
-            ((ClipLazyProvider) DataProvider).ApplyTagFilter("category", "favorite");
+            ((ClipLazyProvider) DataProvider).ApplyTagFilter("category");
         }
 
         #region Logic

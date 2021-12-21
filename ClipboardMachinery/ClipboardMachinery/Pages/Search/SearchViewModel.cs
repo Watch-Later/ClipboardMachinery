@@ -7,14 +7,11 @@ namespace ClipboardMachinery.Pages.Search {
 
         #region IScreenPage
 
-        public string Title
-            => "Search";
+        public string Title { get; } = "Search";
 
-        public string Icon
-            => "IconSearch";
+        public string Icon { get; } = "IconSearch";
 
-        public byte Order
-            => 3;
+        public byte Order { get; } = 3;
 
         #endregion
 

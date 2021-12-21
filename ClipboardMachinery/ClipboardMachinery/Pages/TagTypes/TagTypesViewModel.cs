@@ -11,14 +11,11 @@ namespace ClipboardMachinery.Pages.TagTypes {
 
         #region IScreenPage
 
-        public string Title
-            => "Tags";
+        public string Title { get; } = "Tags";
 
-        public string Icon
-            => "IconTag";
+        public string Icon { get; } = "IconTag";
 
-        public byte Order
-            => 3;
+        public byte Order { get; } = 4;
 
         #endregion
 

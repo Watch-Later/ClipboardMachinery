@@ -27,7 +27,7 @@ namespace ClipboardMachinery.Core.DataStorage.Impl {
         /// </summary>
         /// <param name="name">Name of a tag to filter or null if you do no with to filter by this property.</param>
         /// <param name="value">Value of a tag to filter or null if you do no with to filter by this property.</param>
-        public void ApplyTagFilter(string name, string value) {
+        public void ApplyTagFilter(string name, string value = null) {
             filteredTagName = name;
             filteredTagValue = value;
         }
@@ -38,11 +38,11 @@ namespace ClipboardMachinery.Core.DataStorage.Impl {
 
         protected override Task OnQueryBuildingStarts(SqlExpression<Clip> query) {
             // NOTE: More in-depth implementation will be needed once we start working on search.
-            if (!string.IsNullOrEmpty(filteredTagName) && !string.IsNullOrEmpty(filteredTagValue)) {
+            if (!string.IsNullOrEmpty(filteredTagName)) {
                 query
                     .LeftJoin<Tag>()
                     .Join<Tag, TagType>()
-                    .Where<Tag>(tag => tag.Type.Name == filteredTagName && tag.Value.ToString() == filteredTagValue);
+                    .Where<Tag>(tag => tag.Type.Name == filteredTagName && (string.IsNullOrEmpty(filteredTagValue) || tag.Value == filteredTagValue));
             }
 
             return base.OnQueryBuildingStarts(query);
